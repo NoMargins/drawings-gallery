@@ -4,16 +4,16 @@ import type React from "react"
 
 import { useState, useEffect } from "react"
 import { useRouter, useParams } from "next/navigation"
+import Image from "next/image"
 import { useAuth } from "@/components/auth-provider"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { ArrowLeft, Save, AlertCircle, X } from "lucide-react"
-import { getSubmissionById } from "@/lib/data"
+import { ArrowLeft, Save, Download, AlertCircle, X } from "lucide-react"
+import { getSubmissionById, updateSubmission } from "@/lib/data"
 import type { ChildSubmission } from "@/lib/types"
-import { ImageUpload } from "@/components/image-upload"
 
 export default function EditSubmission() {
   const { user } = useAuth()
@@ -72,43 +72,26 @@ export default function EditSubmission() {
     }
   }
 
-  const handleSave = async () => {
+  const handleSave = () => {
     if (!submission) return
 
-    try {
-      // В реальному додатку тут був би API запит для оновлення заявки
-      const response = await fetch(`/api/submissions/${id}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          childName,
-          childAge,
-          workCity,
-          officeAddress,
-          parentName,
-          contactPhone,
-          photoUrl: previewUrl,
-        }),
-      })
+    // In a real app, this would be an API call to update the submission
+    // For this demo, we'll update the submission in our mock database
+    const updatedSubmission = updateSubmission(id, {
+      childName,
+      childAge,
+      workCity,
+      officeAddress,
+      parentName,
+      contactPhone,
+      photoUrl: selectedFile && previewUrl ? previewUrl : submission.photoUrl,
+    })
 
-      if (!response.ok) {
-        throw new Error("Помилка при оновленні заявки")
-      }
-
-      const data = await response.json()
-
-      if (data.success) {
-        setSubmission(data.data)
-        setSuccess("Зміни успішно збережено")
-        setTimeout(() => setSuccess(""), 3000)
-      } else {
-        setError(data.error || "Помилка при збереженні змін")
-        setTimeout(() => setError(""), 3000)
-      }
-    } catch (error) {
-      console.error("Error updating submission:", error)
+    if (updatedSubmission) {
+      setSubmission(updatedSubmission)
+      setSuccess("Зміни успішно збережено")
+      setTimeout(() => setSuccess(""), 3000)
+    } else {
       setError("Помилка при збереженні змін")
       setTimeout(() => setError(""), 3000)
     }
@@ -257,11 +240,31 @@ export default function EditSubmission() {
 
               <div className="space-y-4">
                 <Label className="text-green-600">Малюнок</Label>
-                <ImageUpload
-                  onImageSelected={(url) => setPreviewUrl(url)}
-                  previewUrl={previewUrl}
-                  childName={childName}
-                />
+                <div className="relative aspect-[4/3] w-full border-2 border-green-200 rounded-md overflow-hidden">
+                  {previewUrl && (
+                    <Image src={previewUrl || "/placeholder.svg"} alt="Малюнок" fill className="object-contain" />
+                  )}
+                </div>
+
+                <div className="flex flex-col gap-2">
+                  <Label htmlFor="newImage" className="text-green-600">
+                    Завантажити новий малюнок
+                  </Label>
+                  <Input
+                    id="newImage"
+                    type="file"
+                    accept="image/*"
+                    onChange={handleFileChange}
+                    className="border-2 border-green-200"
+                  />
+                </div>
+
+                <Button
+                  onClick={handleDownloadImage}
+                  className="w-full flex items-center justify-center gap-2 bg-blue-500 hover:bg-blue-600"
+                >
+                  <Download className="h-4 w-4" /> Завантажити малюнок
+                </Button>
               </div>
             </div>
           </CardContent>

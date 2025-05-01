@@ -11,6 +11,7 @@ import { z } from "zod"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import {
   Heart,
@@ -46,8 +47,6 @@ import { Mail, Phone, User } from "lucide-react"
 import { getRecentSubmissions } from "@/lib/data"
 import { ShareButtons } from "@/components/share-buttons"
 import { SocialShareModal } from "@/components/social-share-modal"
-// Додайте імпорт нового компонента
-import { ImageUpload } from "@/components/image-upload"
 
 const formSchema = z.object({
   childName: z.string().min(2, {
@@ -280,7 +279,7 @@ export default function ChildrenProtectionDay() {
   }, [form.watch])
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    if (!previewUrl) {
+    if (!selectedFile) {
       alert("Будь ласка, завантажте малюнок вашої дитини")
       return
     }
@@ -288,44 +287,59 @@ export default function ChildrenProtectionDay() {
     setIsSubmitting(true)
 
     try {
-      // Додаємо заявку через API
-      const response = await fetch("/api/submissions", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          ...values,
-          photoUrl: previewUrl,
-        }),
-      })
+      // В реальному додатку тут був би API запит для завантаження файлу
+      // та збереження даних у базі даних
+      const reader = new FileReader()
+      reader.onloadend = async () => {
+        const photoUrl = typeof reader.result === "string" ? reader.result : "/placeholder.svg"
 
-      if (!response.ok) {
-        throw new Error("Помилка при додаванні заявки")
+        // Додаємо заявку через API
+        try {
+          const response = await fetch("/api/submissions", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              ...values,
+              photoUrl,
+            }),
+          })
+
+          if (!response.ok) {
+            throw new Error("Помилка при додаванні заявки")
+          }
+
+          // Відправляємо сповіщення на email
+          await fetch("/api/notifications/email", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              to: values.parentName,
+              email: "user@example.com", // В реальному додатку тут був би email користувача
+              subject: 'Дякуємо за участь у конкурсі "Малюнок для мого Сміливовершника"',
+              childName: values.childName,
+            }),
+          })
+
+          setIsSubmitting(false)
+          setUploadStatus("success")
+          setSubmittedData(values)
+
+          // Оновлюємо кількість учасників
+          setParticipantCount((prev) => prev + 1)
+        } catch (error) {
+          console.error("Error submitting form:", error)
+          setIsSubmitting(false)
+          setUploadStatus("error")
+        }
       }
 
-      // Відправляємо сповіщення на email
-      await fetch("/api/notifications/email", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          to: values.parentName,
-          email: "user@example.com", // В реальному додатку тут був би email користувача
-          subject: 'Дякуємо за участь у конкурсі "Малюнок для мого Сміливовершника"',
-          childName: values.childName,
-        }),
-      })
-
-      setIsSubmitting(false)
-      setUploadStatus("success")
-      setSubmittedData(values)
-
-      // Оновлюємо кількість учасників
-      setParticipantCount((prev) => prev + 1)
+      reader.readAsDataURL(selectedFile)
     } catch (error) {
-      console.error("Error submitting form:", error)
+      console.error("Error processing file:", error)
       setIsSubmitting(false)
       setUploadStatus("error")
     }
@@ -773,11 +787,18 @@ export default function ChildrenProtectionDay() {
                     </div>
 
                     <div className="space-y-2">
-                      <ImageUpload
-                        onImageSelected={(url) => setPreviewUrl(url)}
-                        previewUrl={previewUrl}
-                        childName={form.getValues("childName") || "unknown"}
-                      />
+                      <Label htmlFor="picture" className="block text-green-600 font-medium">
+                        Завантажте малюнок вашої дитини
+                      </Label>
+                      <div className="flex items-center gap-4">
+                        <Input
+                          id="picture"
+                          type="file"
+                          accept="image/*"
+                          onChange={handleFileChange}
+                          className="rounded-xl border-2 border-green-200 focus:border-green-400 focus:ring-green-400"
+                        />
+                      </div>
                     </div>
 
                     <FormField
