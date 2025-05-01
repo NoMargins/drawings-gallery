@@ -7,7 +7,8 @@ import { useRouter, usePathname } from "next/navigation"
 type User = {
   id: string
   email: string
-  role: "admin" | "user"
+  name: string
+  role: "admin" | "superadmin"
 } | null
 
 type AuthContextType = {
@@ -36,7 +37,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   // Protect admin routes
   useEffect(() => {
-    if (!isLoading && pathname?.startsWith("/admin") && !user) {
+    if (!isLoading && pathname?.startsWith("/admin") && !user && pathname !== "/admin/login") {
       router.push("/admin/login")
     }
   }, [isLoading, user, pathname, router])
@@ -44,12 +45,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const login = async (email: string, password: string) => {
     setIsLoading(true)
     try {
-      // In a real app, this would be an API call to your backend
-      // For demo purposes, we'll use a mock login
-      if (email === "admin@example.com" && password === "password") {
+      // В реальному додатку тут буде API запит до сервера
+      // Для демо можемо використовувати тестові дані
+      if (process.env.NODE_ENV === "development" && email === "admin@example.com" && password === "password") {
         const user = {
           id: "1",
           email,
+          name: "Адміністратор",
           role: "admin" as const,
         }
         setUser(user)
@@ -57,6 +59,26 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setIsLoading(false)
         return true
       }
+
+      // Запит до API для автентифікації
+      const response = await fetch("/api/admin/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      })
+
+      if (response.ok) {
+        const data = await response.json()
+        if (data.success) {
+          setUser(data.data)
+          localStorage.setItem("user", JSON.stringify(data.data))
+          setIsLoading(false)
+          return true
+        }
+      }
+
       setIsLoading(false)
       return false
     } catch (error) {

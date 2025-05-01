@@ -10,6 +10,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Home, Calendar, MapPin, Trophy, Medal, Star, Heart, Flag, Shield, FileText } from "lucide-react"
 import { getWinnersByCategory } from "@/lib/data"
 import type { ChildSubmission, AgeCategory } from "@/lib/types"
+// Додайте імпорт компонента ImageModal на початку файлу
+import { ImageModal } from "@/components/image-modal"
 
 export default function Winners() {
   const [activeTab, setActiveTab] = useState<AgeCategory>("0-5")
@@ -141,31 +143,36 @@ export default function Winners() {
               {winners[category].length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                   {winners[category].map((winner, index) => (
-                    <div key={winner.id} className="flex flex-col items-center">
-                      <div className="relative mb-6">
+                    <div key={winner.id} className="flex flex-col items-center h-full">
+                      <div className="relative mb-6 w-full">
                         <div
                           className="absolute -top-6 -right-6 w-16 h-16 rounded-full flex items-center justify-center shadow-lg z-10"
                           style={{ backgroundColor: medalColors[index] }}
                         >
                           <div className="text-white font-bold text-xl">{index + 1}</div>
                         </div>
-                        <Card className="overflow-hidden border-4 w-full" style={{ borderColor: medalColors[index] }}>
-                          <div className="relative h-64 w-full aspect-square">
-                            <Image
-                              src={winner.photoUrl || "/placeholder.svg"}
-                              alt={winner.childName}
-                              fill
-                              className="object-contain"
-                              loading="lazy"
-                              sizes="(max-width: 768px) 100vw, 33vw"
-                            />
+                        <Card
+                          className="overflow-hidden border-4 w-full h-full"
+                          style={{ borderColor: medalColors[index] }}
+                        >
+                          <div className="relative h-64 w-full">
+                            <ImageModal src={winner.photoUrl || "/placeholder.svg"} alt={winner.childName}>
+                              <Image
+                                src={winner.photoUrl || "/placeholder.svg"}
+                                alt={winner.childName}
+                                fill
+                                className="object-contain"
+                                loading="lazy"
+                                sizes="(max-width: 768px) 100vw, 33vw"
+                              />
+                            </ImageModal>
                           </div>
                           <CardContent className="pt-4 pb-6">
                             <div className="flex justify-between items-start mb-2">
                               <h3 className="text-xl font-bold text-green-700">{winner.childName}</h3>
-                              <Badge className="bg-blue-500">
+                              <Badge className="bg-blue-500 ml-2">
                                 <Star className="h-3 w-3 mr-1 fill-current" />
-                                {winner.votes} голосів
+                                {winner.votes}
                               </Badge>
                             </div>
                             <div className="space-y-1">

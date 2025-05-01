@@ -1,5 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server"
 import { getSubmissionByIdFromDb, updateSubmissionInDb, publishSubmissionInDb } from "@/lib/db-service"
+import { saveImageToServer, deleteImageFromServer } from "@/lib/server-utils"
 
 // GET /api/submissions/[id] - отримати конкретну заявку
 export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
@@ -24,7 +25,33 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
     const id = params.id
     const body = await request.json()
 
-    const updatedSubmission = await updateSubmissionInDb(id, body)
+    // Отримуємо поточну заявку для перевірки, чи змінилося зображення
+    const currentSubmission = await getSubmissionByIdFromDb(id)
+    if (!currentSubmission) {
+      return NextResponse.json({ success: false, error: "Заявку не знайдено" }, { status: 404 })
+    }
+
+    // Якщо є нове зображення у форматі base64, зберігаємо його на сервері
+    let photoUrl = body.photoUrl
+    if (body.photoUrl && body.photoUrl !== currentSubmission.photoUrl) {
+      if (body.photoUrl.startsWith("data:image")) {
+        // Видаляємо старе зображення, якщо воно зберігалося на сервері
+        if (currentSubmission.photoUrl.startsWith("/uploads")) {
+          deleteImageFromServer(currentSubmission.photoUrl)
+        }
+
+        // Зберігаємо нове зображення
+        photoUrl = await saveImageToServer(body.photoUrl, body.childName || currentSubmission.childName)
+      }
+    }
+
+    // Оновлюємо дані заявки
+    const updatedData = {
+      ...body,
+      photoUrl: photoUrl,
+    }
+
+    const updatedSubmission = await updateSubmissionInDb(id, updatedData)
 
     if (!updatedSubmission) {
       return NextResponse.json({ success: false, error: "Заявку не знайдено" }, { status: 404 })

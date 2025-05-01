@@ -19,6 +19,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
+// Додайте імпорт компонента ImageModal на початку файлу
+import { ImageModal } from "@/components/image-modal"
 
 export default function Gallery() {
   const [activeTab, setActiveTab] = useState<AgeCategory>("0-5")
@@ -267,31 +269,39 @@ export default function Gallery() {
 
           {(["0-5", "6-8", "9-12", "13-18"] as AgeCategory[]).map((category) => (
             <TabsContent key={category} value={category} className="space-y-6">
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+              <div
+                className={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 ${
+                  submissions[category].length > 0 && submissions[category].length < 4
+                    ? "justify-items-center md:grid-cols-" + submissions[category].length
+                    : ""
+                }`}
+              >
                 {submissions[category].length > 0 ? (
                   submissions[category].map((submission) => (
                     <Card
                       key={submission.id}
-                      className="overflow-hidden border-2 border-green-200 hover:shadow-lg transition-shadow h-full"
+                      className="overflow-hidden border-2 border-green-200 hover:shadow-lg transition-shadow h-full w-full max-w-sm"
                     >
                       <div className="relative aspect-square w-full">
-                        <Image
-                          src={submission.photoUrl || "/placeholder.svg"}
-                          alt={submission.childName}
-                          fill
-                          className="object-contain"
-                          loading="lazy"
-                          sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                        />
-                        {submission.votes > 0 && (
-                          <div className="absolute top-2 right-2">
-                            <Badge className="bg-blue-500">
-                              <Star className="h-3 w-3 mr-1 fill-current" />
-                              {submission.votes}{" "}
-                              {submission.votes === 1 ? "голос" : submission.votes < 5 ? "голоси" : "голосів"}
-                            </Badge>
-                          </div>
-                        )}
+                        <ImageModal src={submission.photoUrl || "/placeholder.svg"} alt={submission.childName}>
+                          <Image
+                            src={submission.photoUrl || "/placeholder.svg"}
+                            alt={submission.childName}
+                            fill
+                            className="object-contain"
+                            loading="lazy"
+                            sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                          />
+                          {submission.votes > 0 && (
+                            <div className="absolute top-2 right-2">
+                              <Badge className="bg-blue-500">
+                                <Star className="h-3 w-3 mr-1 fill-current" />
+                                {submission.votes}{" "}
+                                {submission.votes === 1 ? "голос" : submission.votes < 5 ? "голоси" : "голосів"}
+                              </Badge>
+                            </div>
+                          )}
+                        </ImageModal>
                       </div>
                       <CardContent className="pt-4">
                         <h3 className="text-lg font-bold text-green-700">{submission.childName}</h3>
