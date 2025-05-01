@@ -68,7 +68,12 @@
     "chart.js": "latest",
     "mongodb": "latest",
     "nodemailer": "latest",
-    "react-chartjs-2": "latest"
+    "react-chartjs-2": "latest",
+    "bcryptjs": "latest",
+    "fs": "latest",
+    "path": "latest",
+    "uuid": "latest",
+    "sharp": "latest"
   },
   "devDependencies": {
     "@types/node": "^22",

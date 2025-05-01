@@ -5,6 +5,7 @@ import {
   getPublishedSubmissionsFromDb,
   addSubmissionToDb,
 } from "@/lib/db-service"
+import { saveImageToServer } from "@/lib/server-utils"
 import type { AgeCategory } from "@/lib/types"
 
 // GET /api/submissions - отримати всі заявки (для адмін-панелі)
@@ -49,6 +50,14 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: "Не всі обов'язкові поля заповнені" }, { status: 400 })
     }
 
+    // Зберігаємо малюнок на сервері
+    let photoUrl = body.photoUrl
+
+    // Якщо це base64-рядок, зберігаємо на сервері
+    if (body.photoUrl.startsWith("data:image")) {
+      photoUrl = await saveImageToServer(body.photoUrl, body.childName)
+    }
+
     const newSubmission = await addSubmissionToDb({
       childName: body.childName,
       childAge: body.childAge,
@@ -56,7 +65,7 @@ export async function POST(request: NextRequest) {
       officeAddress: body.officeAddress,
       parentName: body.parentName,
       contactPhone: body.contactPhone,
-      photoUrl: body.photoUrl,
+      photoUrl: photoUrl,
     })
 
     return NextResponse.json({ success: true, data: newSubmission }, { status: 201 })

@@ -11,7 +11,6 @@ import { z } from "zod"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import {
   Heart,
@@ -47,6 +46,8 @@ import { Mail, Phone, User } from "lucide-react"
 import { getRecentSubmissions } from "@/lib/data"
 import { ShareButtons } from "@/components/share-buttons"
 import { SocialShareModal } from "@/components/social-share-modal"
+// Додайте імпорт нового компонента
+import { ImageUpload } from "@/components/image-upload"
 
 const formSchema = z.object({
   childName: z.string().min(2, {
@@ -72,10 +73,11 @@ const formSchema = z.object({
   }),
 })
 
-// Update the BackgroundElements function to use summer colors
+// Знайдіть функцію BackgroundElements і замініть її на наступну:
+
 function BackgroundElements() {
   return (
-    <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+    <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
       {/* Stars */}
       {[...Array(15)].map((_, i) => (
         <div
@@ -86,6 +88,7 @@ function BackgroundElements() {
             left: `${Math.random() * 100}%`,
             animationDelay: `${Math.random() * 5}s`,
             animationDuration: `${3 + Math.random() * 4}s`,
+            opacity: 0.3,
           }}
         >
           <Star
@@ -108,7 +111,7 @@ function BackgroundElements() {
             left: `${Math.random() * 100}%`,
             animationDelay: `${Math.random() * 5}s`,
             animationDuration: `${8 + Math.random() * 7}s`,
-            opacity: 0.6,
+            opacity: 0.3,
           }}
         >
           <Flower
@@ -130,6 +133,7 @@ function BackgroundElements() {
             left: `${Math.random() * 100}%`,
             animationDelay: `${Math.random() * 5}s`,
             animationDuration: `${2 + Math.random() * 3}s`,
+            opacity: 0.3,
           }}
         >
           <Sparkles
@@ -151,7 +155,7 @@ function BackgroundElements() {
             left: `${Math.random() * 100}%`,
             animationDelay: `${Math.random() * 10}s`,
             animationDuration: `${30 + Math.random() * 40}s`,
-            opacity: 0.4,
+            opacity: 0.2,
           }}
         >
           <Cloud size={30 + Math.floor(Math.random() * 40)} className="text-white" fill="currentColor" />
@@ -159,32 +163,32 @@ function BackgroundElements() {
       ))}
 
       {/* Sun and Moon */}
-      <div className="absolute top-[15%] right-[10%] animate-pulse" style={{ animationDuration: "8s" }}>
+      <div className="absolute top-[15%] right-[10%] animate-pulse" style={{ animationDuration: "8s", opacity: 0.3 }}>
         <Sun size={40} className="text-yellow-300" fill="currentColor" />
       </div>
       <div
         className="absolute bottom-[20%] left-[8%] animate-pulse"
-        style={{ animationDuration: "10s", animationDelay: "2s" }}
+        style={{ animationDuration: "10s", animationDelay: "2s", opacity: 0.3 }}
       >
         <Moon size={32} className="text-blue-200" fill="currentColor" />
       </div>
 
       {/* Toy blocks */}
       <div
-        className="absolute top-[40%] left-[5%] w-10 h-10 bg-yellow-400 rounded-lg rotate-12 opacity-40 animate-float"
+        className="absolute top-[40%] left-[5%] w-10 h-10 bg-yellow-400 rounded-lg rotate-12 opacity-20 animate-float"
         style={{ animationDuration: "12s" }}
       ></div>
       <div
-        className="absolute top-[60%] right-[7%] w-8 h-8 bg-green-400 rounded-lg -rotate-6 opacity-40 animate-float"
+        className="absolute top-[60%] right-[7%] w-8 h-8 bg-green-400 rounded-lg -rotate-6 opacity-20 animate-float"
         style={{ animationDuration: "15s", animationDelay: "3s" }}
       ></div>
       <div
-        className="absolute bottom-[30%] left-[20%] w-12 h-12 bg-blue-400 rounded-lg rotate-45 opacity-40 animate-float"
+        className="absolute bottom-[30%] left-[20%] w-12 h-12 bg-blue-400 rounded-lg rotate-45 opacity-20 animate-float"
         style={{ animationDuration: "18s", animationDelay: "5s" }}
       ></div>
 
       {/* Teddy bear silhouettes */}
-      <div className="absolute top-[70%] right-[15%] opacity-30">
+      <div className="absolute top-[70%] right-[15%] opacity-20">
         <svg
           width="40"
           height="40"
@@ -201,7 +205,7 @@ function BackgroundElements() {
           <circle cx="15" cy="6" r="1" fill="white" />
         </svg>
       </div>
-      <div className="absolute top-[25%] left-[25%] opacity-30 animate-float" style={{ animationDuration: "20s" }}>
+      <div className="absolute top-[25%] left-[25%] opacity-20 animate-float" style={{ animationDuration: "20s" }}>
         <svg
           width="30"
           height="30"
@@ -276,7 +280,7 @@ export default function ChildrenProtectionDay() {
   }, [form.watch])
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    if (!selectedFile) {
+    if (!previewUrl) {
       alert("Будь ласка, завантажте малюнок вашої дитини")
       return
     }
@@ -284,59 +288,44 @@ export default function ChildrenProtectionDay() {
     setIsSubmitting(true)
 
     try {
-      // В реальному додатку тут був би API запит для завантаження файлу
-      // та збереження даних у базі даних
-      const reader = new FileReader()
-      reader.onloadend = async () => {
-        const photoUrl = typeof reader.result === "string" ? reader.result : "/placeholder.svg"
+      // Додаємо заявку через API
+      const response = await fetch("/api/submissions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...values,
+          photoUrl: previewUrl,
+        }),
+      })
 
-        // Додаємо заявку через API
-        try {
-          const response = await fetch("/api/submissions", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              ...values,
-              photoUrl,
-            }),
-          })
-
-          if (!response.ok) {
-            throw new Error("Помилка при додаванні заявки")
-          }
-
-          // Відправляємо сповіщення на email
-          await fetch("/api/notifications/email", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              to: values.parentName,
-              email: "user@example.com", // В реальному додатку тут був би email користувача
-              subject: 'Дякуємо за участь у конкурсі "Малюнок для мого Сміливовершника"',
-              childName: values.childName,
-            }),
-          })
-
-          setIsSubmitting(false)
-          setUploadStatus("success")
-          setSubmittedData(values)
-
-          // Оновлюємо кількість учасників
-          setParticipantCount((prev) => prev + 1)
-        } catch (error) {
-          console.error("Error submitting form:", error)
-          setIsSubmitting(false)
-          setUploadStatus("error")
-        }
+      if (!response.ok) {
+        throw new Error("Помилка при додаванні заявки")
       }
 
-      reader.readAsDataURL(selectedFile)
+      // Відправляємо сповіщення на email
+      await fetch("/api/notifications/email", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          to: values.parentName,
+          email: "user@example.com", // В реальному додатку тут був би email користувача
+          subject: 'Дякуємо за участь у конкурсі "Малюнок для мого Сміливовершника"',
+          childName: values.childName,
+        }),
+      })
+
+      setIsSubmitting(false)
+      setUploadStatus("success")
+      setSubmittedData(values)
+
+      // Оновлюємо кількість учасників
+      setParticipantCount((prev) => prev + 1)
     } catch (error) {
-      console.error("Error processing file:", error)
+      console.error("Error submitting form:", error)
       setIsSubmitting(false)
       setUploadStatus("error")
     }
@@ -618,28 +607,20 @@ export default function ChildrenProtectionDay() {
                 </div>
 
                 {/* Image Preview Area */}
-                <div className="relative mt-4 sm:mt-6">
-                  <div className="absolute -top-4 -left-4 w-full h-full bg-yellow-300 rounded-2xl transform rotate-2"></div>
-                  <div className="absolute -top-2 -left-2 w-full h-full bg-sky-300 rounded-2xl transform -rotate-1"></div>
-                  <div className="relative z-10 border-4 border-white rounded-2xl shadow-xl overflow-hidden aspect-[4/3] w-full max-w-lg mx-auto">
-                    {previewUrl ? (
+                {previewUrl && (
+                  <div className="relative mt-4 sm:mt-6">
+                    <div className="absolute -top-4 -left-4 w-full h-full bg-yellow-300 rounded-2xl transform rotate-2"></div>
+                    <div className="absolute -top-2 -left-2 w-full h-full bg-sky-300 rounded-2xl transform -rotate-1"></div>
+                    <div className="relative z-10 border-4 border-white rounded-2xl shadow-xl overflow-hidden aspect-[4/3] w-full max-w-lg mx-auto">
                       <Image
                         src={previewUrl || "/placeholder.svg"}
                         alt="Попередній перегляд"
                         fill
                         className="object-cover"
                       />
-                    ) : (
-                      <div className="w-full h-full bg-white flex flex-col items-center justify-center p-4 sm:p-6 text-center">
-                        <Camera className="h-12 sm:h-16 w-12 sm:w-16 text-green-200 mb-2 sm:mb-4" />
-                        <p className="text-green-400 font-medium text-base sm:text-lg">
-                          Малюнок вашої дитини з'явиться тут
-                        </p>
-                        <p className="text-green-300 text-xs sm:text-sm mt-2">Завантажте малюнок за допомогою форми</p>
-                      </div>
-                    )}
+                    </div>
                   </div>
-                </div>
+                )}
               </>
             )}
           </div>
@@ -792,18 +773,11 @@ export default function ChildrenProtectionDay() {
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="picture" className="block text-green-600 font-medium">
-                        Завантажте малюнок вашої дитини
-                      </Label>
-                      <div className="flex items-center gap-4">
-                        <Input
-                          id="picture"
-                          type="file"
-                          accept="image/*"
-                          onChange={handleFileChange}
-                          className="rounded-xl border-2 border-green-200 focus:border-green-400 focus:ring-green-400"
-                        />
-                      </div>
+                      <ImageUpload
+                        onImageSelected={(url) => setPreviewUrl(url)}
+                        previewUrl={previewUrl}
+                        childName={form.getValues("childName") || "unknown"}
+                      />
                     </div>
 
                     <FormField
