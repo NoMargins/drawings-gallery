@@ -1,5 +1,6 @@
 import type { Config } from "tailwindcss";
 
+
 const config: Config = {
     darkMode: ["class"],
     content: [
@@ -10,6 +11,9 @@ const config: Config = {
   ],
   theme: {
   	extend: {
+		fontFamily: {
+			myFont: ["SilpoFont", "sans-serif"],
+		  },
   		colors: {
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
@@ -60,7 +64,8 @@ const config: Config = {
   				'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
   				border: 'hsl(var(--sidebar-border))',
   				ring: 'hsl(var(--sidebar-ring))'
-  			}
+  			},
+			
   		},
   		borderRadius: {
   			lg: 'var(--radius)',

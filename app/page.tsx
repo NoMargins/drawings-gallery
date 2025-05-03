@@ -375,9 +375,9 @@ export default function ChildrenProtectionDay() {
   // Get consent text based on age
   const getConsentText = () => {
     if (isUnder14) {
-      return "Так, я є батьком/матір'ю дитини до 14 років і даю згоду на використання малюнка моєї дитини в рамках конкурсу, я розумію та погоджуюся з усіма умовами конкурсу."
+      return "Так, я є батьком/матір'ю дитини до 14 років і даю згоду на використання малюнка моєї дитини в межах конкурсу, я розумію та погоджуюся з усіма умовами конкурсу."
     } else {
-      return "Так, мені 14+ років, я даю згоду на використання мого малюнка в рамках конкурсу, я розумію та погоджуюся з усіма умовами конкурсу."
+      return "Так, мені 14+ років, я даю згоду на використання мого малюнка в межах конкурсу, я розумію та погоджуюся з усіма умовами конкурсу."
     }
   }
 
@@ -428,16 +428,16 @@ export default function ChildrenProtectionDay() {
                   size="sm"
                   className="bg-gradient-to-r from-green-500 to-blue-500 text-white border-none hover:from-green-600 hover:to-blue-600 rounded-full px-3 sm:px-6 shadow-md text-xs sm:text-sm"
                 >
-                  <Smile className="mr-1 sm:mr-2 h-4 w-4" /> Контакти
+                  <Smile className="font-myFont mr-1 sm:mr-2 h-4 w-4" /> Контакти
                 </Button>
               </DialogTrigger>
-              <DialogContent className="sm:max-w-md bg-gradient-to-br from-sky-50 to-green-50 border-2 border-green-200 rounded-3xl max-h-[90vh] overflow-y-auto">
+              <DialogContent className="font-myFont sm:max-w-md bg-gradient-to-br from-sky-50 to-green-50 border-2 border-green-200 rounded-3xl max-h-[90vh] overflow-y-auto">
                 <DialogHeader>
-                  <DialogTitle className="text-xl text-center text-green-600 font-bold">
+                  <DialogTitle className="font-myFont text-xl text-center text-green-600 font-bold">
                     Познайомтеся з нашим менеджером проєкту!
                   </DialogTitle>
-                  <DialogDescription className="text-center">
-                    З будь-яких питань щодо конкурсу «Шеврон для мого захисника», будь ласка, зв'яжіться:
+                  <DialogDescription className="font-myFont text-center">
+                    З будь-яких питань щодо конкурсу «Шеврон для мого захисника», будь ласка, зв'яжіться з:
                   </DialogDescription>
                 </DialogHeader>
                 <div className="p-4 space-y-4">
@@ -446,8 +446,8 @@ export default function ChildrenProtectionDay() {
                       <User className="h-10 w-10 text-white" />
                     </div>
                     <div className="text-center">
-                      <h3 className="font-bold text-xl text-green-600">Марта Глушко</h3>
-                      <p className="text-sm text-green-400">Менеджер конкурсу «Шеврон для мого захисника»</p>
+                      <h3 className="font-myFont font-bold text-xl text-green-600">Марта Глушко</h3>
+                      <p className="text-sm text-grey-400">Менеджер конкурсу «Шеврон для мого захисника»</p>
                     </div>
                   </div>
 
@@ -561,10 +561,10 @@ export default function ChildrenProtectionDay() {
               /* Show default content before submission */
               <>
                 <div className="inline-flex items-center rounded-full bg-gradient-to-r from-green-400 to-blue-400 px-4 py-2 text-sm font-medium text-white shadow-md">
-                  <Calendar className="mr-2 h-5 w-5" />
-                  <span>1 червня - День захисту дітей</span>
+                  <Calendar className="font-myFont mr-2 h-5 w-5" />
+                  <span className="font-myFont">1 червня - День захисту дітей</span>
                 </div>
-                <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-green-700 leading-tight">
+                <h1 className="font-myFont text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-green-700 leading-tight">
                   Конкурс малюнків <span className="text-blue-500">«Шеврон для мого захисника»</span>
                 </h1>
                 <div className="flex flex-col sm:flex-row gap-4 items-center">
@@ -599,24 +599,24 @@ export default function ChildrenProtectionDay() {
                         ))}
                   </div>
                   <p className="text-xs sm:text-sm bg-white px-3 sm:px-4 py-2 rounded-full shadow-md text-green-600 font-medium">
-                    <span className="font-bold text-blue-500">{participantCount} учасників</span> вже приєдналися до
+                    <span className="font-myFont font-bold text-blue-500">{participantCount} учасників</span> вже приєдналися до
                     конкурсу!
                   </p>
                 </div>
-                  <p className="text-green-700 text-base sm:text-lg leading-relaxed">
+                  <p className="font-myFont text-green-700 text-base sm:text-lg leading-relaxed">
                   Маленькі мрійники, це ваш час творити! <br />
                   Запрошуємо Перевершничків взяти участь у конкурсі та
                   створити власний малюнок-ідею для шеврону українських героїв.
                 </p>
-                <p className="text-green-700 text-base sm:text-lg leading-relaxed">
+                <p className="font-myFont text-green-700 text-base sm:text-lg leading-relaxed">
                   Уявіть, яким може бути символ хоробрості, добра й любові до України — і перенесіть це на аркуш.
                   Найзворушливіші роботи стануть частиною великого проєкту подяки нашим захисникам.
                 </p>
                 <p className="text-yellow-700 font-medium text-base sm:text-lg bg-yellow-50 p-4 rounded-xl border border-yellow-200">
-                  🛡 <span className="font-bold">Після завершення прийому малюнків чекайте на сповіщення про старт голосування.</span> <br />
-                  У 4 вікових категоріях буде обрано по 3 переможці — завдяки відкритому онлайн-голосуванню.
+                🛡 <span className="font-myFont font-bold">Приймаємо ваші чудові малюночки з 6 по 18 травня — нам уже кортить їх побачити!</span> <br />
+А потім — трішечки зачекайте, і ми надішлемо звісточку про старт голосування. У кожній з 4 вікових категорій буде аж троє переможців — їх оберуть у відкритому онлайн-голосуванні ✨
                 </p>
-                <p className="text-center text-blue-500 font-semibold text-base sm:text-lg mt-4">
+                <p className="font-myFont text-center text-blue-500 font-semibold text-base sm:text-lg mt-4">
                   🎨 Малюємо, щоб сказати "дякую"!
                 </p>
 
@@ -652,8 +652,8 @@ export default function ChildrenProtectionDay() {
             {uploadStatus === "idle" && (
               <>
                 <div className="mb-4 sm:mb-6 space-y-2">
-                  <h2 className="text-xl sm:text-2xl font-bold text-center text-green-600 flex items-center justify-center">
-                    <Heart className="mr-2 h-5 sm:h-6 w-5 sm:w-6 text-blue-500" fill="currentColor" />
+                  <h2 className="font-myFont text-xl sm:text-2xl font-bold text-center text-green-600 flex items-center justify-center">
+                    <Heart className="font-myFont mr-2 h-5 sm:h-6 w-5 sm:w-6 text-blue-500" fill="currentColor" />
                     Форма реєстрації
                     <Heart className="ml-2 h-5 sm:h-6 w-5 sm:w-6 text-blue-500" fill="currentColor" />
                   </h2>
@@ -666,12 +666,12 @@ export default function ChildrenProtectionDay() {
                       name="childName"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-green-600 font-medium">Повне ім'я дитини</FormLabel>
+                          <FormLabel className="font-myFont font-medium text-green-600">Повне ім'я дитини</FormLabel>
                           <FormControl>
                             <Input
                               placeholder="Прізвище, Ім'я"
                               {...field}
-                              className="rounded-xl border-2 border-green-200 focus:border-green-400 focus:ring-green-400"
+                              className="font-myFont rounded-xl border-2 border-green-200 focus:border-green-400 focus:ring-green-400"
                             />
                           </FormControl>
                           <FormMessage />
@@ -695,7 +695,7 @@ export default function ChildrenProtectionDay() {
                           </FormControl>
                           <FormMessage />
                           {currentAge !== null && (
-                            <div className="text-xs text-green-500 mt-1">
+                            <div className="font-myFont text-xs text-green-500 mt-1">
                               {isUnder14
                                 ? "Потрібна згода батьків для дітей до 14 років"
                                 : "Дозволена власна згода для віку 14 і старше"}
@@ -711,12 +711,12 @@ export default function ChildrenProtectionDay() {
                         name="workCity"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel className="text-green-600 font-medium">Місто (де ви працюєте)</FormLabel>
+                            <FormLabel className="font-myFont text-green-600 font-medium">Місто (де ви працюєте)</FormLabel>
                             <FormControl>
                               <Input
                                 placeholder="Місто"
                                 {...field}
-                                className="rounded-xl border-2 border-green-200 focus:border-green-400 focus:ring-green-400"
+                                className="font-myFont rounded-xl border-2 border-green-200 focus:border-green-400 focus:ring-green-400"
                               />
                             </FormControl>
                             <FormMessage />
@@ -729,12 +729,12 @@ export default function ChildrenProtectionDay() {
                         name="officeAddress"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel className="text-green-600 font-medium">Адреса магазину/офісу</FormLabel>
+                            <FormLabel className="font-myFont font-medium text-green-600">Адреса магазину/офісу</FormLabel>
                             <FormControl>
                               <Input
                                 placeholder="Адреса магазину або офісу"
                                 {...field}
-                                className="rounded-xl border-2 border-green-200 focus:border-green-400 focus:ring-green-400"
+                                className="font-myFont rounded-xl border-2 border-green-200 focus:border-green-400 focus:ring-green-400"
                               />
                             </FormControl>
                             <FormMessage />
@@ -749,14 +749,14 @@ export default function ChildrenProtectionDay() {
                         name="parentName"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel className="text-green-600 font-medium">
+                            <FormLabel className="font-myFont font-medium text-green-600">
                               {isUnder14 ? "Ім'я батька/матері" : "Ваше ім'я"}
                             </FormLabel>
                             <FormControl>
                               <Input
                                 placeholder={isUnder14 ? "Ім'я батька/матері" : "Ваше ім'я"}
                                 {...field}
-                                className="rounded-xl border-2 border-green-200 focus:border-green-400 focus:ring-green-400"
+                                className="font-myFont rounded-xl border-2 border-green-200 focus:border-green-400 focus:ring-green-400"
                               />
                             </FormControl>
                             <FormMessage />
@@ -769,12 +769,12 @@ export default function ChildrenProtectionDay() {
                         name="contactPhone"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel className="text-green-600 font-medium">Контактний телефон</FormLabel>
+                            <FormLabel className="font-myFont font-medium text-green-600">Контактний телефон</FormLabel>
                             <FormControl>
                               <Input
                                 placeholder="Ваш номер телефону"
                                 {...field}
-                                className="rounded-xl border-2 border-green-200 focus:border-green-400 focus:ring-green-400"
+                                className="font-myFont rounded-xl border-2 border-green-200 focus:border-green-400 focus:ring-green-400"
                               />
                             </FormControl>
                             <FormMessage />
@@ -784,7 +784,7 @@ export default function ChildrenProtectionDay() {
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="picture" className="block text-green-600 font-medium">
+                      <Label htmlFor="picture" className="font-myFont font-medium block text-green-600">
                         Завантажте малюнок вашої дитини
                       </Label>
                       <div className="flex items-center gap-4">
@@ -812,7 +812,7 @@ export default function ChildrenProtectionDay() {
                           </FormControl>
                           <div className="space-y-1 leading-none">
                             <FormLabel className="text-green-700 text-sm sm:text-base">{getConsentText()}</FormLabel>
-                            <FormDescription className="text-green-500 text-xs sm:text-sm">
+                            <FormDescription className="font-myFont text-green-500 text-xs sm:text-sm">
                               Ваші дані будуть оброблені відповідно до нашої політики конфіденційності та будуть
                               використані лише для цього конкурсу.
                             </FormDescription>
@@ -825,15 +825,15 @@ export default function ChildrenProtectionDay() {
                     <Button
                       type="submit"
                       disabled={isSubmitting}
-                      className="w-full bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 rounded-xl py-4 sm:py-6 text-base sm:text-lg font-bold shadow-lg border-none"
+                      className="w-full bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 rounded-xl py-4 sm:py-6 text-base sm:text-lg font-myFont-bold shadow-lg border-none"
                     >
                       {isSubmitting ? (
                         <>
-                          <RefreshCw className="mr-2 h-5 w-5 animate-spin" /> Завантаження...
+                          <RefreshCw className="font-myFont mr-2 h-5 w-5 animate-spin" /> Завантаження...
                         </>
                       ) : (
                         <>
-                          <Send className="mr-2 h-5 w-5" /> Надіслати малюнок
+                          <Send className="font-myFont mr-2 h-5 w-5" /> Надіслати малюнок
                         </>
                       )}
                     </Button>
@@ -847,25 +847,25 @@ export default function ChildrenProtectionDay() {
                 <div className="w-16 sm:w-24 h-16 sm:h-24 bg-gradient-to-r from-green-400 to-blue-400 rounded-full flex items-center justify-center mx-auto shadow-lg">
                   <CheckCircle className="h-8 sm:h-12 w-8 sm:w-12 text-white" />
                 </div>
-                <h2 className="text-xl sm:text-2xl font-bold text-green-600">Реєстрація завершена!</h2>
-                <p className="text-green-500 text-sm sm:text-base">
+                <h2 className="font-myFont-bold text-xl sm:text-2xl text-green-600">Реєстрація завершена!</h2>
+                <p className="font-myFont text-green-500 text-sm sm:text-base">
                   Дякуємо за надісланий малюнок! Ваша заявка прийнята та буде розглянута модераторами.
                 </p>
-                <div className="bg-green-50 p-3 sm:p-4 rounded-xl border-2 border-green-100">
-                  <p className="text-green-700 font-medium text-sm sm:text-base">
+                <div className="font-myFont bg-green-50 p-3 sm:p-4 rounded-xl border-2 border-green-100">
+                  <p className="font-myFont font-medium text-green-700 text-sm sm:text-base">
                     Ваша заявка підтверджена з такою інформацією:
                   </p>
                   <ul className="text-left mt-3 space-y-1 text-green-600 text-xs sm:text-sm">
                     <li>
-                      <span className="font-medium">Дитина:</span> {submittedData?.childName}, Вік:{" "}
+                      <span className="font-myFont font-medium">Дитина:</span> {submittedData?.childName}, Вік:{" "}
                       {submittedData?.childAge}
                     </li>
                     <li>
-                      <span className="font-medium">Місцезнаходження:</span> {submittedData?.workCity},{" "}
+                      <span className="font-myFont font-medium">Місцезнаходження:</span> {submittedData?.workCity},{" "}
                       {submittedData?.officeAddress}
                     </li>
                     <li>
-                      <span className="font-medium">Контакт:</span> {submittedData?.parentName},{" "}
+                      <span className="font-myFont font-medium">Контакт:</span> {submittedData?.parentName},{" "}
                       {submittedData?.contactPhone}
                     </li>
                   </ul>
