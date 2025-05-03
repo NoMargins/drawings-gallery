@@ -59,7 +59,7 @@ export function SocialShareModal({
         <DialogHeader>
           <DialogTitle>Поділитися</DialogTitle>
           <DialogDescription>
-            Поділіться конкурсом "Малюнок для мого Сміливовершника" з друзями та колегами
+            Поділіться конкурсом «Шеврон для мого захисника» з друзями та колегами
           </DialogDescription>
         </DialogHeader>
 

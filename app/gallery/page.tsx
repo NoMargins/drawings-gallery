@@ -11,6 +11,7 @@ import { Heart, Home, Calendar, Gift, Trophy, Star, MapPin, Info, AlertCircle, F
 import { getPublishedSubmissions, getSubmissionsByCategory, voteForSubmission, hasUserVoted } from "@/lib/data"
 import type { ChildSubmission, AgeCategory } from "@/lib/types"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import Footer from "@/components/Footer"
 import {
   Dialog,
   DialogContent,
@@ -22,7 +23,7 @@ import {
 // Додайте імпорт компонента ImageModal на початку файлу
 import { ImageModal } from "@/components/image-modal"
 
-export default function Gallery() {
+export default function GalleryPage() {
   const [activeTab, setActiveTab] = useState<AgeCategory>("0-5")
   const [submissions, setSubmissions] = useState<Record<AgeCategory, ChildSubmission[]>>({
     "0-5": [],
@@ -39,93 +40,74 @@ export default function Gallery() {
   })
 
   useEffect(() => {
-    // Generate a random user ID if not exists (in a real app, this would be a proper user authentication)
-    const storedUserId = localStorage.getItem("galleryUserId")
-    if (storedUserId) {
-      setUserId(storedUserId)
-    } else {
-      const newUserId = `user_${Date.now()}`
-      localStorage.setItem("galleryUserId", newUserId)
-      setUserId(newUserId)
+    const storedId = localStorage.getItem("galleryUserId")
+    if (storedId) setUserId(storedId)
+    else {
+      const newId = crypto.randomUUID()
+      localStorage.setItem("galleryUserId", newId)
+      setUserId(newId)
     }
-
-    // Load submissions by category
-    const categories: AgeCategory[] = ["0-5", "6-8", "9-12", "13-18"]
-    const submissionsByCategory: Record<AgeCategory, ChildSubmission[]> = {
-      "0-5": [],
-      "6-8": [],
-      "9-12": [],
-      "13-18": [],
-    }
-
-    categories.forEach((category) => {
-      submissionsByCategory[category] = getSubmissionsByCategory(category)
-    })
-
-    setSubmissions(submissionsByCategory)
   }, [])
 
   useEffect(() => {
-    // Check which submissions the user has voted for
-    if (userId) {
-      const voted: Record<string, boolean> = {}
-      const allSubmissions = getPublishedSubmissions()
+    if (userId) fetchData()
+    async function fetchData() {
+      try {
+        const res = await fetch("/api/submissions")
+        const data = await res.json()
+        const grouped: Record<AgeCategory, ChildSubmission[]> = {
+          "0-5": [],
+          "6-8": [],
+          "9-12": [],
+          "13-18": [],
+        }
+        data.forEach((s: ChildSubmission) => grouped[s.ageCategory].push(s))
+        setSubmissions(grouped)
 
-      allSubmissions.forEach((submission) => {
-        voted[submission.id] = hasUserVoted(submission.id, userId)
-      })
-
-      setVotedSubmissions(voted)
+        const voted = await fetch(`/api/votes?voterId=${userId}`)
+        const votedIds = await voted.json()
+        const voteMap: Record<string, boolean> = {}
+        votedIds.forEach((id: string) => (voteMap[id] = true))
+        setVotedSubmissions(voteMap)
+      } catch (err) {
+        console.error("Помилка завантаження даних", err)
+      }
     }
   }, [userId])
 
-  const handleVote = (submissionId: string) => {
+  const handleVote = async (submissionId: string) => {
     if (votedSubmissions[submissionId]) {
-      setVoteAlert({
-        show: true,
-        success: false,
-        message: "Ви вже проголосували за цю роботу!",
-      })
-      setTimeout(() => setVoteAlert({ show: false, success: false, message: "" }), 3000)
-      return
+      setVoteAlert({ show: true, success: false, message: "Ви вже проголосували за цю роботу!" })
+      return setTimeout(() => setVoteAlert({ show: false, success: false, message: "" }), 3000)
     }
+    try {
+      const res = await fetch("/api/votes", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ voterId: userId, submissionId }),
+      })
+      const result = await res.json()
+      if (!res.ok) throw new Error(result.message)
 
-    const success = voteForSubmission(submissionId, userId)
-
-    if (success) {
-      // Update local state
       setVotedSubmissions((prev) => ({ ...prev, [submissionId]: true }))
-
-      // Update submission vote count
       setSubmissions((prev) => {
         const updated = { ...prev }
-        Object.keys(updated).forEach((category) => {
-          updated[category as AgeCategory] = updated[category as AgeCategory].map((s) =>
-            s.id === submissionId ? { ...s, votes: s.votes + 1 } : s,
+        Object.keys(updated).forEach((cat) => {
+          updated[cat as AgeCategory] = updated[cat as AgeCategory].map((s) =>
+            s.id === submissionId ? { ...s, votes: s.votes + 1 } : s
           )
         })
         return updated
       })
-
-      setVoteAlert({
-        show: true,
-        success: true,
-        message: "Ваш голос зараховано! Дякуємо за участь!",
-      })
-    } else {
-      setVoteAlert({
-        show: true,
-        success: false,
-        message: "Помилка при голосуванні. Спробуйте пізніше.",
-      })
+      setVoteAlert({ show: true, success: true, message: "Ваш голос зараховано!" })
+    } catch (err: any) {
+      setVoteAlert({ show: true, success: false, message: err.message || "Помилка голосування" })
     }
-
     setTimeout(() => setVoteAlert({ show: false, success: false, message: "" }), 3000)
   }
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-sky-100 via-green-50 to-yellow-100">
-      {/* Alert for vote status */}
       {voteAlert.show && (
         <div className="fixed top-4 right-4 z-50 max-w-md">
           <Alert variant={voteAlert.success ? "default" : "destructive"} className="border-2 border-green-200">
@@ -175,7 +157,7 @@ export default function Gallery() {
               <DialogContent className="sm:max-w-md bg-gradient-to-br from-sky-50 to-green-50 border-2 border-green-200 rounded-3xl max-h-[90vh] overflow-y-auto">
                 <DialogHeader>
                   <DialogTitle className="text-xl text-center text-green-600 font-bold">
-                    Умови конкурсу "Малюнок для мого Сміливовершника"
+                    Умови конкурсу «Шеврон для мого захисника»
                   </DialogTitle>
                   <DialogDescription className="text-center text-green-500">
                     Ознайомтеся з правилами та умовами участі
@@ -236,12 +218,12 @@ export default function Gallery() {
       <main className="container mx-auto px-4 py-8 md:py-12 relative z-10">
         <div className="text-center mb-10">
           <h1 className="text-3xl md:text-4xl font-bold text-green-700 mb-4">
-            Галерея малюнків "Малюнок для мого Сміливовершника"
+            Галерея малюнків «Шеврон для мого захисника»
           </h1>
           <p className="text-lg text-green-600 max-w-3xl mx-auto">
-            Перегляньте малюнки наших маленьких учасників та проголосуйте за найкращі! Ваші голоси допоможуть визначити
-            переможців конкурсу.
-          </p>
+            Перегляньте малюнки наших маленьких учасників та проголосуйте за найкращі!
+          </p> 
+          <p>Ваші голоси допоможуть визначити переможців конкурсу.</p>
         </div>
 
         <Tabs
@@ -347,52 +329,7 @@ export default function Gallery() {
         </Tabs>
       </main>
 
-      {/* Footer */}
-      <footer className="bg-gradient-to-r from-green-500 to-blue-500 text-white py-8 mt-12 rounded-t-3xl relative z-10">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div>
-              <h3 className="text-lg font-bold mb-4 flex items-center">
-                <Gift className="mr-2 h-5 w-5" />
-                Про конкурс
-              </h3>
-              <p className="text-white">
-                Конкурс малюнків "Малюнок для мого Сміливовершника" присвячений Дню захисту дітей. Малюнки будуть
-                використані для створення особливого проекту до Дня захисту дітей та Дня Захисника України.
-              </p>
-            </div>
-            <div>
-              <h3 className="text-lg font-bold mb-4 flex items-center">
-                <Trophy className="mr-2 h-5 w-5" />
-                Нагородження
-              </h3>
-              <p className="text-white">
-                Переможці будуть оголошені 1 червня. У кожній віковій категорії буде обрано трьох переможців, які
-                отримають подарунки.
-              </p>
-            </div>
-            <div>
-              <h3 className="text-lg font-bold mb-4 flex items-center">
-                <Heart className="mr-2 h-5 w-5" />
-                Конфіденційність
-              </h3>
-              <p className="text-white">
-                Вся надана інформація буде використовуватися виключно для конкурсу "Малюнок для мого Сміливовершника" і
-                буде оброблятися відповідно до нашої політики конфіденційності.
-              </p>
-              <Link
-                href="/privacy-policy"
-                className="flex items-center mt-2 text-white hover:text-yellow-200 underline"
-              >
-                <FileText className="h-4 w-4 mr-1" /> Політика конфіденційності
-              </Link>
-            </div>
-          </div>
-          <div className="border-t border-white/30 mt-8 pt-6 text-center text-white">
-            <p>© {new Date().getFullYear()} Ваша Компанія. Всі права захищені.</p>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   )
 }

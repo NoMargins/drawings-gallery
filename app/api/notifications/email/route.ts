@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
           Шановний(а) ${body.parentName || "учаснику"},
         </p>
         <p style="font-size: 16px; line-height: 1.5;">
-          Ми отримали малюнок ${body.childName ? `від ${body.childName}` : "вашої дитини"} для конкурсу "Малюнок для мого Сміливовершника".
+          Ми отримали малюнок ${body.childName ? `від ${body.childName}` : "вашої дитини"} для конкурсу «Шеврон для мого захисника».
           Дякуємо за вашу участь!
         </p>
         <p style="font-size: 16px; line-height: 1.5;">
@@ -43,7 +43,7 @@ export async function POST(request: NextRequest) {
         </div>
         <p style="font-size: 16px; line-height: 1.5;">
           З повагою,<br>
-          Команда конкурсу "Малюнок для мого Сміливовершника"
+          Команда конкурсу «Шеврон для мого захисника»
         </p>
       </div>
     `

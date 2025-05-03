@@ -200,7 +200,7 @@ export default function AdminDashboard() {
 
       <header className="bg-white shadow-md p-4">
         <div className="container mx-auto flex justify-between items-center flex-wrap gap-3">
-          <h1 className="text-xl font-bold text-green-700">Адмін-панель конкурсу "Малюнок для мого Сміливовершника"</h1>
+          <h1 className="text-xl font-bold text-green-700">Адмін-панель конкурсу «Шеврон для мого захисника»</h1>
           <div className="flex items-center gap-4">
             <div className="text-sm text-green-600">
               Вітаємо, <span className="font-medium">{user?.email}</span>

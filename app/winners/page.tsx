@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import Image from "next/image"
 import Link from "next/link"
+import Footer from "@/components/Footer"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -58,7 +59,7 @@ export default function Winners() {
                 className="rounded-full relative z-10 border-2 border-white"
               />
             </div>
-            <span className="text-xl font-bold text-green-600">Ваша Компанія</span>
+            <span className="text-xl sm:text-2xl font-bold text-green-600">Ваша Компанія</span>
           </div>
           <div className="flex gap-3 flex-wrap">
             <Link href="/">
@@ -78,41 +79,19 @@ export default function Winners() {
       </header>
 
       {/* Main Content */}
-      <main className="container mx-auto px-4 py-8 md:py-12 relative z-10">
-        <div className="text-center mb-10">
+      <main className="container mx-auto px-4 py-4 md:py-6 relative z-10">
+      <div className="text-center mb-10">
           <div className="inline-flex items-center rounded-full bg-gradient-to-r from-yellow-400 to-amber-500 px-4 py-2 text-sm font-medium text-white shadow-md mb-4">
             <Trophy className="mr-2 h-5 w-5" />
-            <span>Переможці конкурсу</span>
+            <span>Вітаємо переможців!</span>
           </div>
-          <h1 className="text-3xl md:text-4xl font-bold text-green-700 mb-4">
-            Переможці конкурсу "Малюнок для мого Сміливовершника"
+          <h1 className="text-3xl sm:text-base md:text-4xl font-bold text-green-700 mb-4">
+            Переможці конкурсу «Шеврон для мого захисника»
           </h1>
-          <p className="text-lg text-green-600 max-w-3xl mx-auto">
+          <p className="text-lg sm:text-base text-green-600 max-w-3xl mx-auto">
             Вітаємо переможців нашого конкурсу! Дякуємо всім учасникам за чудові малюнки та підтримку наших
-            Сміливовершників.
+            захисників.
           </p>
-        </div>
-
-        <div className="bg-white p-6 rounded-xl border-2 border-yellow-300 shadow-lg mb-10">
-          <div className="flex flex-col md:flex-row items-center gap-6">
-            <div className="w-24 h-24 bg-gradient-to-r from-yellow-400 to-amber-500 rounded-full flex items-center justify-center">
-              <Shield className="h-12 w-12 text-white" />
-            </div>
-            <div className="flex-1">
-              <h2 className="text-2xl font-bold text-amber-600 mb-2">Особлива ініціатива</h2>
-              <p className="text-green-700">
-                Цей конкурс — про зв'язок поколінь, про дитячу щирість, віру і вдячність тим, хто береже наше
-                сьогодення. Малюнки будуть використані у патріотичному контенті до Дня Захисника та Захисниці (1
-                жовтня), щоб показати: діти — наше майбутнє, яке ми всі разом захищаємо.
-              </p>
-              <div className="flex items-center mt-4">
-                <Flag className="h-5 w-5 text-blue-500 mr-2" />
-                <span className="text-blue-600 font-medium">
-                  Дякуємо всім учасникам за їхню творчість та підтримку!
-                </span>
-              </div>
-            </div>
-          </div>
         </div>
 
         <Tabs
@@ -123,16 +102,16 @@ export default function Winners() {
         >
           <div className="flex justify-center mb-6 overflow-x-auto">
             <TabsList className="bg-white border-2 border-green-200 p-1">
-              <TabsTrigger value="0-5" className="data-[state=active]:bg-green-500 data-[state=active]:text-white">
+              <TabsTrigger value="0-5" className="px-3 py-2 text-sm sm:text-base data-[state=active]:bg-green-500 data-[state=active]:text-white">
                 0-5 років
               </TabsTrigger>
-              <TabsTrigger value="6-8" className="data-[state=active]:bg-green-500 data-[state=active]:text-white">
+              <TabsTrigger value="6-8" className="px-3 py-2 text-sm sm:text-base data-[state=active]:bg-green-500 data-[state=active]:text-white">
                 6-8 років
               </TabsTrigger>
-              <TabsTrigger value="9-12" className="data-[state=active]:bg-green-500 data-[state=active]:text-white">
+              <TabsTrigger value="9-12" className="px-3 py-2 text-sm sm:text-base data-[state=active]:bg-green-500 data-[state=active]:text-white"              >
                 9-12 років
               </TabsTrigger>
-              <TabsTrigger value="13-18" className="data-[state=active]:bg-green-500 data-[state=active]:text-white">
+              <TabsTrigger value="13-18" className="px-3 py-2 text-sm sm:text-base data-[state=active]:bg-green-500 data-[state=active]:text-white"              >
                 13-18 років
               </TabsTrigger>
             </TabsList>
@@ -149,13 +128,13 @@ export default function Winners() {
                           className="absolute -top-6 -right-6 w-16 h-16 rounded-full flex items-center justify-center shadow-lg z-10"
                           style={{ backgroundColor: medalColors[index] }}
                         >
-                          <div className="text-white font-bold text-xl">{index + 1}</div>
+                          <div className="text-white font-bold text-xl sm:text-2xl">{index + 1}</div>
                         </div>
                         <Card
                           className="overflow-hidden border-4 w-full h-full"
                           style={{ borderColor: medalColors[index] }}
                         >
-                          <div className="relative h-64 w-full">
+                          <div className="relative h-60 sm:h-72 md:h-80 w-full"                          >
                             <ImageModal src={winner.photoUrl || "/placeholder.svg"} alt={winner.childName}>
                               <Image
                                 src={winner.photoUrl || "/placeholder.svg"}
@@ -169,7 +148,7 @@ export default function Winners() {
                           </div>
                           <CardContent className="pt-4 pb-6">
                             <div className="flex justify-between items-start mb-2">
-                              <h3 className="text-xl font-bold text-green-700">{winner.childName}</h3>
+                              <h3 className="text-xl sm:text-2xl font-bold text-green-700">{winner.childName}</h3>
                               <Badge className="bg-blue-500 ml-2">
                                 <Star className="h-3 w-3 mr-1 fill-current" />
                                 {winner.votes}
@@ -198,24 +177,15 @@ export default function Winners() {
                           </CardContent>
                         </Card>
                       </div>
-                      <div className="text-center">
-                        <p className="font-medium text-green-700">
-                          {index === 0
-                            ? "Подарунковий сертифікат на 1000 грн"
-                            : index === 1
-                              ? "Подарунковий сертифікат на 700 грн"
-                              : "Подарунковий сертифікат на 500 грн"}
-                        </p>
-                      </div>
                     </div>
                   ))}
                 </div>
               ) : (
-                <div className="text-center py-12 bg-white rounded-xl shadow-md">
+                <div className="text-center py-8 sm:py-12 bg-white rounded-xl shadow-md">
                   <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-yellow-100 mb-4">
                     <Trophy className="h-8 w-8 text-yellow-500" />
                   </div>
-                  <h3 className="text-xl font-bold text-green-700">Переможці ще не визначені</h3>
+                  <h3 className="text-xl sm:text-2xl font-bold text-green-700">Переможці ще не визначені</h3>
                   <p className="text-green-600 mt-2">
                     Голосування триває до 30 травня. Переможці будуть оголошені 1 червня.
                   </p>
@@ -227,53 +197,7 @@ export default function Winners() {
       </main>
 
       {/* Footer */}
-      <footer className="bg-gradient-to-r from-green-500 to-blue-500 text-white py-8 mt-12 rounded-t-3xl relative z-10">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div>
-              <h3 className="text-lg font-bold mb-4 flex items-center">
-                <Trophy className="mr-2 h-5 w-5" />
-                Про конкурс
-              </h3>
-              <p className="text-white">
-                Конкурс малюнків "Малюнок для мого Сміливовершника" присвячений Дню захисту дітей. Малюнки будуть
-                використані для створення особливого проекту до Дня захисту дітей та Дня Захисника України.
-              </p>
-            </div>
-            <div>
-              <h3 className="text-lg font-bold mb-4 flex items-center">
-                <Medal className="mr-2 h-5 w-5" />
-                Призи
-              </h3>
-              <p className="text-white">
-                1 місце - подарунковий сертифікат на 1000 грн
-                <br />2 місце - подарунковий сертифікат на 700 грн
-                <br />3 місце - подарунковий сертифікат на 500 грн
-              </p>
-            </div>
-            <div>
-              <h3 className="text-lg font-bold mb-4 flex items-center">
-                <Heart className="mr-2 h-5 w-5" />
-                Подяка
-              </h3>
-              <p className="text-white">
-                Щиро дякуємо кожному маленькому учаснику й усім, хто підтримував голосуванням. Кожна робота наповнена
-                теплом, вірою і любов'ю. Наші захисники вже побачили ці витвори й відчули, наскільки сильно їх
-                підтримують вдома.
-              </p>
-              <Link
-                href="/privacy-policy"
-                className="flex items-center mt-2 text-white hover:text-yellow-200 underline"
-              >
-                <FileText className="h-4 w-4 mr-1" /> Політика конфіденційності
-              </Link>
-            </div>
-          </div>
-          <div className="border-t border-white/30 mt-8 pt-6 text-center text-white">
-            <p>© {new Date().getFullYear()} Ваша Компанія. Всі права захищені.</p>
-          </div>
-        </div>
-      </footer>
+          <Footer />
     </div>
   )
 }

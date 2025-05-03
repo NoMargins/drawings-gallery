@@ -208,7 +208,7 @@ export default function AdminAnalytics() {
 
         <div className="mb-6">
           <h1 className="text-2xl font-bold text-green-700">Аналітика конкурсу</h1>
-          <p className="text-green-600">Детальна статистика та аналіз конкурсу "Малюнок для мого Сміливовершника"</p>
+          <p className="text-green-600">Детальна статистика та аналіз конкурсу «Шеврон для мого захисника»</p>
         </div>
 
         {/* Загальна статистика */}

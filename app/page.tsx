@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-
+import Footer from "@/components/Footer"
 import { useState, useEffect } from "react"
 import Image from "next/image"
 import Link from "next/link"
@@ -567,35 +567,6 @@ export default function ChildrenProtectionDay() {
                 <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-green-700 leading-tight">
                   Конкурс малюнків <span className="text-blue-500">«Шеврон для мого захисника»</span>
                 </h1>
-                  <p className="text-green-700 text-base sm:text-lg leading-relaxed">
-                  Маленькі мрійники, це ваш час творити! <br />
-                  Запрошуємо Перевершничків взяти участь у конкурсі та
-                  створити власний малюнок-ідею для шеврону українських героїв.
-                </p>
-                <p className="text-green-700 text-base sm:text-lg leading-relaxed">
-                  Уявіть, яким може бути символ хоробрості, добра й любові до України — і перенесіть це на аркуш.
-                  Найзворушливіші роботи стануть частиною великого проєкту подяки нашим захисникам.
-                </p>
-                <p className="text-yellow-700 font-medium text-base sm:text-lg bg-yellow-50 p-4 rounded-xl border border-yellow-200">
-                  🛡 <span className="font-bold">Після завершення прийому малюнків чекайте на сповіщення про старт голосування.</span> <br />
-                  У 4 вікових категоріях буде обрано по 3 переможці — завдяки відкритому онлайн-голосуванню.
-                </p>
-                <p className="text-center text-blue-500 font-semibold text-base sm:text-lg mt-4">
-                  🎨 Малюємо, щоб сказати "дякую"!
-                </p>
-
-                <div className="bg-white p-3 sm:p-4 rounded-xl border-2 border-yellow-200 shadow-md">
-                  <div className="flex items-center gap-2 sm:gap-3">
-                    <Shield className="h-6 sm:h-8 w-6 sm:w-8 text-blue-500" />
-                    <div>
-                      <h3 className="font-bold text-green-700 text-sm sm:text-base">Особлива ініціатива</h3>
-                      <p className="text-green-600 text-xs sm:text-sm">
-                        Ваші малюнки стануть частиною особливого проєкту до Дня захисту дітей та Дня захисників та захисниць України!
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
                 <div className="flex flex-col sm:flex-row gap-4 items-center">
                   <div className="flex -space-x-4">
                     {recentSubmissions.length > 0
@@ -632,6 +603,23 @@ export default function ChildrenProtectionDay() {
                     конкурсу!
                   </p>
                 </div>
+                  <p className="text-green-700 text-base sm:text-lg leading-relaxed">
+                  Маленькі мрійники, це ваш час творити! <br />
+                  Запрошуємо Перевершничків взяти участь у конкурсі та
+                  створити власний малюнок-ідею для шеврону українських героїв.
+                </p>
+                <p className="text-green-700 text-base sm:text-lg leading-relaxed">
+                  Уявіть, яким може бути символ хоробрості, добра й любові до України — і перенесіть це на аркуш.
+                  Найзворушливіші роботи стануть частиною великого проєкту подяки нашим захисникам.
+                </p>
+                <p className="text-yellow-700 font-medium text-base sm:text-lg bg-yellow-50 p-4 rounded-xl border border-yellow-200">
+                  🛡 <span className="font-bold">Після завершення прийому малюнків чекайте на сповіщення про старт голосування.</span> <br />
+                  У 4 вікових категоріях буде обрано по 3 переможці — завдяки відкритому онлайн-голосуванню.
+                </p>
+                <p className="text-center text-blue-500 font-semibold text-base sm:text-lg mt-4">
+                  🎨 Малюємо, щоб сказати "дякую"!
+                </p>
+
 
                 {/* Image Preview Area */}
                 {previewUrl && (
@@ -930,52 +918,7 @@ export default function ChildrenProtectionDay() {
         </div>
       </main>
 
-      {/* Footer */}
-      <footer className="bg-gradient-to-r from-green-500 to-blue-500 text-white py-6 sm:py-8 mt-8 sm:mt-12 rounded-t-3xl relative z-10">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8">
-            <div>
-              <h3 className="text-base sm:text-lg font-bold mb-3 sm:mb-4 flex items-center">
-                <Gift className="mr-2 h-4 sm:h-5 w-4 sm:w-5" />
-                Про конкурс
-              </h3>
-              <p className="text-white text-sm sm:text-base">
-                Конкурс малюнків «Шеврон для мого захисника» присвячений Дню захисту дітей. Малюнки будуть
-                використані для створення особливого проєкту до Дня захисту дітей та Дня захисників та захисниць України.
-              </p>
+      <Footer />
             </div>
-            <div>
-              <h3 className="text-base sm:text-lg font-bold mb-3 sm:mb-4 flex items-center">
-                <Trophy className="mr-2 h-4 sm:h-5 w-4 sm:w-5" />
-                Нагородження
-              </h3>
-              <p className="text-white text-sm sm:text-base">
-                Переможці будуть оголошені 30 травня. У кожній віковій категорії буде обрано трьох переможців, які
-                отримають подаруночки!
-              </p>
-            </div>
-            <div className="sm:col-span-2 md:col-span-1">
-              <h3 className="text-base sm:text-lg font-bold mb-3 sm:mb-4 flex items-center">
-                <Heart className="mr-2 h-4 sm:h-5 w-4 sm:w-5" />
-                Конфіденційність
-              </h3>
-              <p className="text-white text-sm sm:text-base">
-                Вся надана інформація буде використовуватися виключно для конкурсу «Шеврон для мого захисника» і
-                буде оброблятися відповідно до нашої політики конфіденційності.
-              </p>
-              <Link
-                href="/privacy-policy"
-                className="flex items-center mt-2 text-white hover:text-yellow-200 underline text-sm sm:text-base"
-              >
-                <FileText className="h-4 w-4 mr-1" /> Політика конфіденційності
-              </Link>
-            </div>
-          </div>
-          <div className="border-t border-white/30 mt-6 sm:mt-8 pt-4 sm:pt-6 text-center text-white">
-            <p className="text-sm sm:text-base">© {new Date().getFullYear()} Fozzy Group. Всі права захищені.</p>
-          </div>
-        </div>
-      </footer>
-    </div>
   )
 }
