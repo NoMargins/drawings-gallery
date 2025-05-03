@@ -47,6 +47,7 @@ import { Mail, Phone, User } from "lucide-react"
 import { getRecentSubmissions } from "@/lib/data"
 import { ShareButtons } from "@/components/share-buttons"
 import { SocialShareModal } from "@/components/social-share-modal"
+import convertToGuillemets from "../utils/formatText"
 
 const formSchema = z.object({
   childName: z.string().min(2, {
@@ -256,7 +257,7 @@ export default function ChildrenProtectionDay() {
         // В реальному додатку тут був би API запит
         const recent = getRecentSubmissions(4)
         setRecentSubmissions(recent.map((s) => ({ id: s.id, photoUrl: s.photoUrl })))
-        setParticipantCount(recent.length > 4 ? recent.length : recent.length + 50) // Add some fake participants for demo
+        setParticipantCount(recent.length > 4 ? recent.length : recent.length + 2) // Add some fake participants for demo
       } catch (error) {
         console.error("Error fetching recent submissions:", error)
       }
@@ -319,7 +320,7 @@ export default function ChildrenProtectionDay() {
             body: JSON.stringify({
               to: values.parentName,
               email: "user@example.com", // В реальному додатку тут був би email користувача
-              subject: 'Дякуємо за участь у конкурсі "Малюнок для мого Сміливовершника"',
+              subject: 'Дякуємо за участь у конкурсі «Шеврон для мого захисника»',
               childName: values.childName,
             }),
           })
@@ -433,10 +434,10 @@ export default function ChildrenProtectionDay() {
               <DialogContent className="sm:max-w-md bg-gradient-to-br from-sky-50 to-green-50 border-2 border-green-200 rounded-3xl max-h-[90vh] overflow-y-auto">
                 <DialogHeader>
                   <DialogTitle className="text-xl text-center text-green-600 font-bold">
-                    Познайомтеся з нашим менеджером проекту!
+                    Познайомтеся з нашим менеджером проєкту!
                   </DialogTitle>
                   <DialogDescription className="text-center">
-                    З будь-яких питань щодо конкурсу "Малюнок для мого Сміливовершника", будь ласка, зв'яжіться:
+                    З будь-яких питань щодо конкурсу «Шеврон для мого захисника», будь ласка, зв'яжіться:
                   </DialogDescription>
                 </DialogHeader>
                 <div className="p-4 space-y-4">
@@ -446,7 +447,7 @@ export default function ChildrenProtectionDay() {
                     </div>
                     <div className="text-center">
                       <h3 className="font-bold text-xl text-green-600">Марта Глушко</h3>
-                      <p className="text-sm text-green-400">Менеджер конкурсу "Малюнок для мого Сміливовершника"</p>
+                      <p className="text-sm text-green-400">Менеджер конкурсу «Шеврон для мого захисника»</p>
                     </div>
                   </div>
 
@@ -455,13 +456,13 @@ export default function ChildrenProtectionDay() {
                       <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">
                         <Phone className="h-5 w-5 text-green-500" />
                       </div>
-                      <span className="font-medium">+38 (050) 123-4567</span>
+                      <span className="font-medium">+38 (093) 257-77-60</span>
                     </div>
                     <div className="flex items-center gap-3 p-2 rounded-xl bg-blue-50">
                       <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
                         <Mail className="h-5 w-5 text-blue-500" />
                       </div>
-                      <span className="font-medium">marta.glushko@yourcompany.com</span>
+                      <span className="font-medium">m.glushko@fozzy.ua</span>
                     </div>
                   </div>
 
@@ -482,7 +483,7 @@ export default function ChildrenProtectionDay() {
               </DialogContent>
             </Dialog>
             <SocialShareModal
-              title="Конкурс малюнків 'Малюнок для мого Сміливовершника'"
+              title="Конкурс малюнків 'Шеврон для мого захисника"
               description="Запрошуємо взяти участь у конкурсі малюнків до Дня захисту дітей!"
               url={typeof window !== "undefined" ? window.location.origin : "https://example.com"}
               hashtags={["ДеньЗахистуДітей", "Сміливовершник", "Конкурс"]}
@@ -501,7 +502,7 @@ export default function ChildrenProtectionDay() {
 
       {/* Main Content */}
       <main className="container mx-auto px-4 py-6 sm:py-8 md:py-12 relative z-10">
-        <div className="grid md:grid-cols-2 gap-6 md:gap-12 items-center">
+        <div className="grid md:grid-cols-2 gap-6 md:gap-12 items-start">
           {/* Left Column - Image Preview or Hero Content */}
           <div className="space-y-4 sm:space-y-6">
             {uploadStatus === "success" ? (
@@ -511,14 +512,14 @@ export default function ChildrenProtectionDay() {
                   <CheckCircle className="mr-2 h-5 w-5" />
                   <span>Успішно завантажено!</span>
                 </div>
-                <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-green-700">
+                <div className="hidden md:block">
+                {/* <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-green-700">
                   Дякуємо за надісланий малюнок <span className="text-blue-500">{submittedData?.childName}</span>!
-                </h2>
-                <p className="text-base sm:text-lg text-green-600">
-                  Малюнок вашої дитини буде включено до галереї конкурсу "Малюнок для мого Сміливовершника".
-                </p>
-
-                <div className="relative">
+                </h2> */}
+                {/* <p className="text-base sm:text-lg text-green-600">
+                  Малюнок вашої дитини буде включено до галереї конкурсу «Шеврон для мого захисника».
+                </p> */}
+                <div className="relative mt-6">
                   <div className="absolute -top-4 -left-4 w-full h-full bg-yellow-300 rounded-2xl transform rotate-2"></div>
                   <div className="absolute -top-2 -left-2 w-full h-full bg-sky-300 rounded-2xl transform -rotate-1"></div>
                   <div className="relative z-10 border-4 border-white rounded-2xl shadow-xl overflow-hidden aspect-[4/3] w-full max-w-lg mx-auto">
@@ -532,17 +533,16 @@ export default function ChildrenProtectionDay() {
                     )}
                   </div>
                 </div>
-
-                <div className="flex flex-col sm:flex-row gap-4 items-center justify-center mt-6">
+                {/* <div className="flex flex-col sm:flex-row gap-4 items-center justify-center mt-6">
                   <Button
                     onClick={resetForm}
                     className="bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 rounded-full px-6 py-2 text-white font-medium shadow-md"
                   >
                     <Camera className="mr-2 h-5 w-5" /> Надіслати ще один малюнок
                   </Button>
-                </div>
+                </div> */}
 
-                <div className="mt-4 p-4 bg-white rounded-xl shadow-md">
+                {/* <div className="mt-4 p-4 bg-white rounded-xl shadow-md">
                   <h3 className="text-lg font-bold text-green-700 mb-2 flex items-center">
                     <Share2 className="mr-2 h-5 w-5 text-green-500" /> Поділіться своєю участю
                   </h3>
@@ -551,10 +551,11 @@ export default function ChildrenProtectionDay() {
                   </p>
                   <ShareButtons
                     url={`${window.location.origin}`}
-                    title="Я взяв участь у конкурсі малюнків 'Малюнок для мого Сміливовершника'!"
+                    title="Я взяв участь у конкурсі малюнків 'Шеврон для мого захисника!"
                     hashtags={["ДеньЗахистуДітей", "Сміливовершник", "Конкурс"]}
                   />
-                </div>
+                </div> */}
+              </div>
               </div>
             ) : (
               /* Show default content before submission */
@@ -564,7 +565,7 @@ export default function ChildrenProtectionDay() {
                   <span>1 червня - День захисту дітей</span>
                 </div>
                 <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-green-700 leading-tight">
-                  Конкурс малюнків <span className="text-blue-500">"Малюнок для мого Сміливовершника"</span>
+                  Конкурс малюнків <span className="text-blue-500">«Шеврон для мого захисника»</span>
                 </h1>
                 <p className="text-base sm:text-lg text-green-600">
                   Запрошуємо наших маленьких митців намалювати малюнок для українського Сміливовершника — так, як його
@@ -577,7 +578,7 @@ export default function ChildrenProtectionDay() {
                     <div>
                       <h3 className="font-bold text-green-700 text-sm sm:text-base">Особлива ініціатива</h3>
                       <p className="text-green-600 text-xs sm:text-sm">
-                        Ваші малюнки стануть частиною особливого проекту до Дня захисту дітей та Дня Захисника України!
+                        Ваші малюнки стануть частиною особливого проєкту до Дня захисту дітей та Дня захисників та захисниць України!
                       </p>
                     </div>
                   </div>
@@ -615,7 +616,7 @@ export default function ChildrenProtectionDay() {
                         ))}
                   </div>
                   <p className="text-xs sm:text-sm bg-white px-3 sm:px-4 py-2 rounded-full shadow-md text-green-600 font-medium">
-                    <span className="font-bold text-blue-500">{participantCount}+ учасників</span> вже приєдналися до
+                    <span className="font-bold text-blue-500">{participantCount} учасників</span> вже приєдналися до
                     конкурсу!
                   </p>
                 </div>
@@ -656,10 +657,6 @@ export default function ChildrenProtectionDay() {
                     Форма реєстрації
                     <Heart className="ml-2 h-5 sm:h-6 w-5 sm:w-6 text-blue-500" fill="currentColor" />
                   </h2>
-                  <p className="text-center text-green-500 text-sm sm:text-base">
-                    Будь ласка, заповніть цю форму, щоб взяти участь у конкурсі малюнків "Малюнок для мого
-                    Сміливовершника"!
-                  </p>
                 </div>
 
                 <Form {...form}>
@@ -856,7 +853,7 @@ export default function ChildrenProtectionDay() {
                 </p>
                 <div className="bg-green-50 p-3 sm:p-4 rounded-xl border-2 border-green-100">
                   <p className="text-green-700 font-medium text-sm sm:text-base">
-                    Ваша заявка підтверджена з наступними деталями:
+                    Ваша заявка підтверджена з такою інформацією:
                   </p>
                   <ul className="text-left mt-3 space-y-1 text-green-600 text-xs sm:text-sm">
                     <li>
@@ -873,6 +870,7 @@ export default function ChildrenProtectionDay() {
                     </li>
                   </ul>
                 </div>
+                <div className="block md:hidden mt-6">
                 <div className="relative mt-4 sm:mt-6">
                   <div className="absolute -top-4 -left-4 w-full h-full bg-yellow-300 rounded-2xl transform rotate-2"></div>
                   <div className="absolute -top-2 -left-2 w-full h-full bg-sky-300 rounded-2xl transform -rotate-1"></div>
@@ -887,6 +885,7 @@ export default function ChildrenProtectionDay() {
                     )}
                   </div>
                 </div>
+                </div>
                 <div className="flex justify-center mt-4 sm:mt-6">
                   <Button
                     onClick={resetForm}
@@ -900,6 +899,21 @@ export default function ChildrenProtectionDay() {
                 </p>
               </div>
             )}
+          {/* <div className="block md:hidden mt-8">
+            <div className="p-4 bg-white rounded-xl shadow-md">
+              <h3 className="text-lg font-bold text-green-700 mb-2 flex items-center">
+                <Share2 className="mr-2 h-5 w-5 text-green-500" /> Поділіться своєю участю
+              </h3>
+              <p className="text-sm text-green-600 mb-3">
+                Розкажіть друзям про конкурс та запросіть їх взяти участь!
+              </p>
+              <ShareButtons
+                url={`${window.location.origin}`}
+                title="Я взяв участь у конкурсі малюнків 'Шеврон для мого захисника!"
+                hashtags={["ДеньЗахистуДітей", "Сміливовершник", "Конкурс"]}
+              />
+            </div>
+          </div> */}
           </div>
         </div>
       </main>
@@ -914,8 +928,8 @@ export default function ChildrenProtectionDay() {
                 Про конкурс
               </h3>
               <p className="text-white text-sm sm:text-base">
-                Конкурс малюнків "Малюнок для мого Сміливовершника" присвячений Дню захисту дітей. Малюнки будуть
-                використані для створення особливого проекту до Дня захисту дітей та Дня Захисника України.
+                Конкурс малюнків «Шеврон для мого захисника» присвячений Дню захисту дітей. Малюнки будуть
+                використані для створення особливого проєкту до Дня захисту дітей та Дня захисників та захисниць України.
               </p>
             </div>
             <div>
@@ -924,8 +938,8 @@ export default function ChildrenProtectionDay() {
                 Нагородження
               </h3>
               <p className="text-white text-sm sm:text-base">
-                Переможці будуть оголошені 1 червня. У кожній віковій категорії буде обрано трьох переможців, які
-                отримають подарунки.
+                Переможці будуть оголошені 30 травня. У кожній віковій категорії буде обрано трьох переможців, які
+                отримають подаруночки!
               </p>
             </div>
             <div className="sm:col-span-2 md:col-span-1">
@@ -934,7 +948,7 @@ export default function ChildrenProtectionDay() {
                 Конфіденційність
               </h3>
               <p className="text-white text-sm sm:text-base">
-                Вся надана інформація буде використовуватися виключно для конкурсу "Малюнок для мого Сміливовершника" і
+                Вся надана інформація буде використовуватися виключно для конкурсу «Шеврон для мого захисника» і
                 буде оброблятися відповідно до нашої політики конфіденційності.
               </p>
               <Link
@@ -946,7 +960,7 @@ export default function ChildrenProtectionDay() {
             </div>
           </div>
           <div className="border-t border-white/30 mt-6 sm:mt-8 pt-4 sm:pt-6 text-center text-white">
-            <p className="text-sm sm:text-base">© {new Date().getFullYear()} Ваша Компанія. Всі права захищені.</p>
+            <p className="text-sm sm:text-base">© {new Date().getFullYear()} Fozzy Group. Всі права захищені.</p>
           </div>
         </div>
       </footer>
