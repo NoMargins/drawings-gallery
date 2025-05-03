@@ -567,9 +567,21 @@ export default function ChildrenProtectionDay() {
                 <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-green-700 leading-tight">
                   Конкурс малюнків <span className="text-blue-500">«Шеврон для мого захисника»</span>
                 </h1>
-                <p className="text-base sm:text-lg text-green-600">
-                  Запрошуємо наших маленьких митців намалювати малюнок для українського Сміливовершника — так, як його
-                  уявляє дитина: сміливий, добрий, наповнений любов'ю до Батьківщини!
+                  <p className="text-green-700 text-base sm:text-lg leading-relaxed">
+                  Маленькі мрійники, це ваш час творити! <br />
+                  Запрошуємо Перевершничків взяти участь у конкурсі та
+                  створити власний малюнок-ідею для шеврону українських героїв.
+                </p>
+                <p className="text-green-700 text-base sm:text-lg leading-relaxed">
+                  Уявіть, яким може бути символ хоробрості, добра й любові до України — і перенесіть це на аркуш.
+                  Найзворушливіші роботи стануть частиною великого проєкту подяки нашим захисникам.
+                </p>
+                <p className="text-yellow-700 font-medium text-base sm:text-lg bg-yellow-50 p-4 rounded-xl border border-yellow-200">
+                  🛡 <span className="font-bold">Після завершення прийому малюнків чекайте на сповіщення про старт голосування.</span> <br />
+                  У 4 вікових категоріях буде обрано по 3 переможці — завдяки відкритому онлайн-голосуванню.
+                </p>
+                <p className="text-center text-blue-500 font-semibold text-base sm:text-lg mt-4">
+                  🎨 Малюємо, щоб сказати "дякую"!
                 </p>
 
                 <div className="bg-white p-3 sm:p-4 rounded-xl border-2 border-yellow-200 shadow-md">
@@ -729,10 +741,10 @@ export default function ChildrenProtectionDay() {
                         name="officeAddress"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel className="text-green-600 font-medium">Назва магазину/офісу</FormLabel>
+                            <FormLabel className="text-green-600 font-medium">Адреса магазину/офісу</FormLabel>
                             <FormControl>
                               <Input
-                                placeholder="Назва магазину або офісу"
+                                placeholder="Адреса магазину або офісу"
                                 {...field}
                                 className="rounded-xl border-2 border-green-200 focus:border-green-400 focus:ring-green-400"
                               />
