@@ -1,3 +1,4 @@
+// drawings-gallery\app\api\submissions\route.ts
 import { type NextRequest, NextResponse } from "next/server"
 import {
   getAllSubmissionsFromDb,
@@ -6,6 +7,15 @@ import {
   addSubmissionToDb,
 } from "@/lib/db-service"
 import type { AgeCategory } from "@/lib/types"
+import { IncomingForm } from "formidable"
+import path from "path"
+import fs from "fs"
+
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+}
 
 // GET /api/submissions - отримати всі заявки (для адмін-панелі)
 export async function GET(request: NextRequest) {
@@ -33,35 +43,45 @@ export async function GET(request: NextRequest) {
 
 // POST /api/submissions - додати нову заявку
 export async function POST(request: NextRequest) {
-  try {
-    const body = await request.json()
+  const form = new IncomingForm({
+    uploadDir: path.join(process.cwd(), "public/uploads"),
+    keepExtensions: true,
+    maxFileSize: 10 * 1024 * 1024, // 10MB
+    filename: (_, file) => `${Date.now()}-${file.originalFilename}`,
+  })
 
-    // Валідація даних
-    if (
-      !body.childName ||
-      !body.childAge ||
-      !body.workCity ||
-      !body.officeAddress ||
-      !body.parentName ||
-      !body.contactPhone ||
-      !body.photoUrl
-    ) {
-      return NextResponse.json({ success: false, error: "Не всі обов'язкові поля заповнені" }, { status: 400 })
-    }
-
-    const newSubmission = await addSubmissionToDb({
-      childName: body.childName,
-      childAge: body.childAge,
-      workCity: body.workCity,
-      officeAddress: body.officeAddress,
-      parentName: body.parentName,
-      contactPhone: body.contactPhone,
-      photoUrl: body.photoUrl,
+  const { fields, files }: any = await new Promise((resolve, reject) => {
+    form.parse(request as any, (err, fields, files) => {
+      if (err) reject(err)
+      else resolve({ fields, files })
     })
+  })
 
-    return NextResponse.json({ success: true, data: newSubmission }, { status: 201 })
-  } catch (error) {
-    console.error("Error adding submission:", error)
-    return NextResponse.json({ success: false, error: "Помилка при додаванні заявки" }, { status: 500 })
+  const image = files?.image?.[0]
+  const photoUrl = `/uploads/${path.basename(image?.filepath)}`
+
+  // Валідація
+  if (
+    !fields.childName ||
+    !fields.childAge ||
+    !fields.workCity ||
+    !fields.officeAddress ||
+    !fields.parentName ||
+    !fields.contactPhone ||
+    !photoUrl
+  ) {
+    return NextResponse.json({ success: false, error: "Не всі обов'язкові поля заповнені" }, { status: 400 })
   }
+
+  const newSubmission = await addSubmissionToDb({
+    childName: fields.childName,
+    childAge: fields.childAge,
+    workCity: fields.workCity,
+    officeAddress: fields.officeAddress,
+    parentName: fields.parentName,
+    contactPhone: fields.contactPhone,
+    photoUrl,
+  })
+
+  return NextResponse.json({ success: true, data: newSubmission }, { status: 201 })
 }

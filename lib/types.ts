@@ -1,3 +1,4 @@
+// lib\types.ts
 export type AgeCategory = "0-5" | "6-8" | "9-12" | "13-18"
 
 export type ChildSubmission = {

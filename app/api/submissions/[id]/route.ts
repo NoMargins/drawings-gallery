@@ -1,3 +1,4 @@
+// app\api\submissions\[id]\route.ts
 import { type NextRequest, NextResponse } from "next/server"
 import { getSubmissionByIdFromDb, updateSubmissionInDb, publishSubmissionInDb } from "@/lib/db-service"
 
